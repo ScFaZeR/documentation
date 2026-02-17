@@ -145,7 +145,7 @@ Config.CleanHTML = true`,
             ]
         },
         items: [
-            { name: "document_vierge", label: "Document Vierge", weight: 10, description: "Un papier blanc pour écrire." }
+            { name: "document_vierge", label: "Document Vierge", weight: 10, description: "Un papier blanc pour écrire.", unique: true }
         ],
         configExplanations: [
             { key: "Config.Framework", type: "string", desc: "Framework utilisé (Qbox ou ESX)." },
@@ -267,9 +267,9 @@ Config.RenderDistance = 15.0`,
             ]
         },
         items: [
-            { name: "item_tableau", label: "Tableau d'enquête", weight: 1000, description: "Un tableau en liège pour vos enquêtes." },
-            { name: "photo", label: "Photo", weight: 10, description: "Une photo imprimée." },
-            { name: "stylo", label: "Stylo", weight: 50, description: "Pour écrire des notes." }
+            { name: "item_tableau", label: "Tableau d'enquête", weight: 1000, description: "Un tableau en liège pour vos enquêtes.", unique: true },
+            { name: "photo", label: "Photo", weight: 10, description: "Une photo imprimée.", unique: true },
+            { name: "stylo", label: "Stylo", weight: 50, description: "Pour écrire des notes.", unique: false }
         ],
         configExplanations: [
             { key: "Config.Framework", type: "string", desc: "Framework de synchronisation." },
@@ -451,6 +451,10 @@ Config.TargetVehicles = {
         settings: [{ label: "Jobs", value: "Police, Sheriff" }],
         details: { features: ["Mini-jeu de balayage NUI", "Points d'analyse labo", "Rapports persistants"] },
         configExplanations: [{ key: "Config.Items", type: "table", desc: "Mapping des items de preuve." }],
+        items: [
+            { name: "kit_forensic", label: "Kit de Forensic", weight: 500, description: "Kit complet pour collecter des indices.", unique: false },
+            { name: "forensic_report", label: "Rapport ADN/Empreintes", weight: 10, description: "Rapport d'analyse détaillé.", unique: true }
+        ],
         bridges: [
             { name: "Bridge Framework (Server)", type: "system", desc: "Gestion des callbacks serveurs et identifiants joueurs." },
             { name: "Bridge Framework (Client)", type: "system", desc: "Gestion des menus, inputs et zones ox_target." },
@@ -580,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `['${item.name}'] = {
     label = '${item.label}',
     weight = ${item.weight},
-    stack = true,
+    stack = ${item.unique ? 'false' : 'true'},
     close = true,
     description = '${item.description}'
 },`;
@@ -591,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ['weight'] = ${item.weight},
     ['type'] = 'item',
     ['image'] = '${item.name}.png',
-    ['unique'] = false,
+    ['unique'] = ${item.unique ? 'true' : 'false'},
     ['useable'] = true,
     ['shouldClose'] = true,
     ['combinable'] = nil,
